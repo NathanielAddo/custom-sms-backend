@@ -29,11 +29,27 @@ export class RegistrationService {
     };
   }
 
-  async createRegistration(data: CreateRegistrationDto): Promise<RegistrationResponseDto> {
-    const registration = this.registrationRepository.create(data);
+async createRegistration(data: CreateRegistrationDto): Promise<RegistrationResponseDto> {
+  try {
+    if (!data.firstName || !data.surname || !data.dob || !data.phoneNumber || !data.subgroup) {
+      throw new ApiError(400, "Missing required registration fields.");
+    }
+    const normalizedDOB = new Date(data.dob.toString().split('T')[0]);
+    const registration = this.registrationRepository.create({
+      ...data,
+      dob: normalizedDOB,
+    });
     await this.registrationRepository.save(registration);
     return this.toResponseDto(registration);
+  } catch (error: any) {
+    console.error("Error creating registration:", error);
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(500, "Failed to create registration.");
   }
+}
+
 
   async bulkCreateRegistrations(data: BulkRegistrationDto): Promise<RegistrationResponseDto[]> {
     const registrations = data.registrations.map(reg => ({

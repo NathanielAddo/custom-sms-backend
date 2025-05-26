@@ -8,8 +8,6 @@ export class Member {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-
-// Add to your Member entity
 @ManyToOne(() => User, user => user.members, { onDelete: 'CASCADE' })
 @JoinColumn({ name: "userId" })
 user!: User;
