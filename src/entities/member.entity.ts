@@ -5,7 +5,7 @@ import { User } from "./user.entity";
 
 @Entity()
 export class Member {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id!: string;
 
 @ManyToOne(() => User, user => user.members, { onDelete: 'CASCADE' })
@@ -13,7 +13,7 @@ export class Member {
 user!: User;
 
 @Column()
-userId!: string;
+userId!: number;
 
   @Column()
   firstName!: string;
