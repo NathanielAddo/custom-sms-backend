@@ -1,10 +1,10 @@
 // src/entities/user.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Member } from "./member.entity";
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryColumn()
   id!: string;
 
   @Column({ unique: true })

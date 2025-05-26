@@ -30,7 +30,7 @@ export class AuthController {
 
       // Store user session
       req.session.user = {
-  id: response.data.user.id.toString(), 
+        id: response.data.user.id.toString(), 
         token: response.data.token,
         email: response.data.user.email,
         phone: response.data.user.phone
