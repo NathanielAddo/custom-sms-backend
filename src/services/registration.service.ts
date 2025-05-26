@@ -12,22 +12,23 @@ export class RegistrationService {
     this.registrationRepository = AppDataSource.getRepository(Registration);
   }
 
-  private toResponseDto(registration: Registration): RegistrationResponseDto {
-    return {
-      id: registration.id,
-      firstName: registration.firstName,
-      surname: registration.surname,
-      dob: registration.dob.toISOString().split('T')[0],
-      subgroup: registration.subgroup,
-      email: registration.email,
-      phoneNumber: registration.phoneNumber,
-      description: registration.description,
-      userType: registration.userType,
-      registrationType: registration.registrationType,
-      createdAt: registration.createdAt.toISOString(),
-      updatedAt: registration.updatedAt.toISOString(),
-    };
-  }
+private toResponseDto(registration: Registration): RegistrationResponseDto {
+  return {
+    id: registration.id,
+    firstName: registration.firstName,
+    surname: registration.surname,
+    dob: new Date(registration.dob).toISOString().split('T')[0],
+    subgroup: registration.subgroup,
+    email: registration.email,
+    phoneNumber: registration.phoneNumber,
+    description: registration.description,
+    userType: registration.userType,
+    registrationType: registration.registrationType,
+    createdAt: registration.createdAt.toISOString(),
+    updatedAt: registration.updatedAt.toISOString(),
+  };
+}
+
 
 async createRegistration(data: CreateRegistrationDto): Promise<RegistrationResponseDto> {
   try {
