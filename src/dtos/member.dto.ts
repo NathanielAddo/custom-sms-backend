@@ -1,3 +1,4 @@
+//dtos/member.dto.ts
 export interface CreateMemberDto {
   firstName: string;
   surname: string;

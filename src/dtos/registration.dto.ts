@@ -1,3 +1,4 @@
+///dtos/registration.dto.ts
 export interface CreateRegistrationDto {
   firstName: string;
   surname: string;

@@ -1,3 +1,4 @@
+//services/registration.service.ts
 import { AppDataSource } from "../config/data-source";
 import { Registration } from "../entities/registration.entity";
 import { CreateRegistrationDto, BulkRegistrationDto, RegistrationResponseDto } from "../dtos/registration.dto";

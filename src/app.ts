@@ -1,3 +1,4 @@
+//app.ts
 import { createServer } from "./config/server";
 import { initializeDatabase } from "./config/data-source";
 import dotenv from "dotenv";

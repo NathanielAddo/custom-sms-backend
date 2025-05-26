@@ -1,3 +1,4 @@
+//services/member.service.ts
 import { AppDataSource } from "../config/data-source";
 import { Member } from "../entities/member.entity";
 import { CreateMemberDto, UpdateMemberDto, FilterMembersDto } from "../dtos/member.dto";
@@ -32,7 +33,24 @@ export class MemberService {
     await this.memberRepository.save(member);
     return this.toResponseDto(member);
   }
+async getMembersForUser(userId: string, filter: FilterMembersDto = {}): Promise<MemberResponseDto[]> {
+  let query = this.memberRepository.createQueryBuilder("member")
+    .where("member.userId = :userId", { userId });
 
+  if (filter.searchTerm) {
+    query = query.andWhere(
+      "LOWER(member.firstName) LIKE :searchTerm OR LOWER(member.surname) LIKE :searchTerm OR LOWER(member.email) LIKE :searchTerm",
+      { searchTerm: `%${filter.searchTerm.toLowerCase()}%` }
+    );
+  }
+
+  if (filter.subgroup && filter.subgroup !== "All") {
+    query = query.andWhere("member.subgroup = :subgroup", { subgroup: filter.subgroup });
+  }
+
+  const members = await query.getMany();
+  return members.map(this.toResponseDto);
+}
   async getAllMembers(filter: FilterMembersDto = {}): Promise<MemberResponseDto[]> {
     let query = this.memberRepository.createQueryBuilder("member");
 
