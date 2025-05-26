@@ -2,33 +2,45 @@
 import { Request, Response, NextFunction } from "express";
 import { MemberService } from "../services/member.service";
 import { CreateMemberDto, UpdateMemberDto, FilterMembersDto } from "../dtos/member.dto";
-import { ApiResponse } from "../utils/apiResponse";
+import { ApiResponse, ApiError } from "../utils/apiResponse";
 
 export class MemberController {
   private memberService = new MemberService();
 
-  public createMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const memberData: CreateMemberDto = req.body;
-      const member = await this.memberService.createMember(memberData);
-      new ApiResponse(res, 201, "Member created successfully", member);
-    } catch (error) {
-      next(error);
+public getAllMembers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    if (!req.session.user) {
+      return next(new ApiError(401, "Unauthorized: User session is missing"));
     }
-  };
 
-  public getAllMembers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const filters: FilterMembersDto = {
-        searchTerm: req.query.searchTerm as string,
-        subgroup: req.query.subgroup as string,
-      };
-      const members = await this.memberService.getAllMembers(filters);
-      new ApiResponse(res, 200, "Members retrieved successfully", members);
-    } catch (error) {
-      next(error);
+    const userId = req.session.user.id;
+    const filters: FilterMembersDto = {
+      searchTerm: req.query.searchTerm as string,
+      subgroup: req.query.subgroup as string,
+    };
+    const members = await this.memberService.getMembersForUser(userId, filters);
+    new ApiResponse(res, 200, "Members retrieved successfully", members);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+public createMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    if (!req.session.user) {
+      return next(new ApiError(401, "Unauthorized: User session is missing"));
     }
-  };
+
+    const userId = req.session.user.id;
+    const memberData: CreateMemberDto = { ...req.body, userId };
+    const member = await this.memberService.createMember(memberData);
+    new ApiResponse(res, 201, "Member created successfully", member);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
   public getMemberById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

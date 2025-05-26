@@ -28,18 +28,19 @@ export class MemberService {
     };
   }
 
-  async createMember(data: CreateMemberDto): Promise<MemberResponseDto> {
-    const member = this.memberRepository.create(data);
-    await this.memberRepository.save(member);
-    return this.toResponseDto(member);
-  }
+async createMember(data: CreateMemberDto): Promise<MemberResponseDto> {
+  const member = this.memberRepository.create(data);
+  await this.memberRepository.save(member);
+  return this.toResponseDto(member);
+}
+
 async getMembersForUser(userId: string, filter: FilterMembersDto = {}): Promise<MemberResponseDto[]> {
   let query = this.memberRepository.createQueryBuilder("member")
     .where("member.userId = :userId", { userId });
 
   if (filter.searchTerm) {
     query = query.andWhere(
-      "LOWER(member.firstName) LIKE :searchTerm OR LOWER(member.surname) LIKE :searchTerm OR LOWER(member.email) LIKE :searchTerm",
+      "(LOWER(member.firstName) LIKE :searchTerm OR LOWER(member.surname) LIKE :searchTerm OR LOWER(member.email) LIKE :searchTerm)",
       { searchTerm: `%${filter.searchTerm.toLowerCase()}%` }
     );
   }
@@ -51,6 +52,7 @@ async getMembersForUser(userId: string, filter: FilterMembersDto = {}): Promise<
   const members = await query.getMany();
   return members.map(this.toResponseDto);
 }
+
   async getAllMembers(filter: FilterMembersDto = {}): Promise<MemberResponseDto[]> {
     let query = this.memberRepository.createQueryBuilder("member");
 

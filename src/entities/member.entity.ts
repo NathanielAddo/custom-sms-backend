@@ -1,10 +1,21 @@
 //entity/member.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { ManyToOne, JoinColumn } from "typeorm";
+import { User } from "./user.entity";
 
 @Entity()
 export class Member {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
+
+
+// Add to your Member entity
+@ManyToOne(() => User, user => user.members, { onDelete: 'CASCADE' })
+@JoinColumn({ name: "userId" })
+user!: User;
+
+@Column()
+userId!: string;
 
   @Column()
   firstName!: string;

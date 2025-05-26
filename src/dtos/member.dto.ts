@@ -7,7 +7,9 @@ export interface CreateMemberDto {
   email: string;
   phoneNumber?: string;
   imageUrl?: string;
+  userId: string; // new
 }
+
 
 export interface UpdateMemberDto extends Partial<CreateMemberDto> {}
 

@@ -4,6 +4,7 @@ import { Member } from "../entities/member.entity";
 import { Registration } from "../entities/registration.entity";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
+import { User } from "../entities/user.entity";
 
 dotenv.config();
 
@@ -34,7 +35,7 @@ export const AppDataSource = new DataSource({
         ca: caCert,
       }
     : undefined,
-    entities: [ Member, Registration ],
+    entities: [ Member, Registration, User ],
     migrations: [
       "dist/migrations/**/*.js", // Point to compiled JavaScript migrations
     ],
