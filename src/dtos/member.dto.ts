@@ -7,11 +7,11 @@ export interface CreateMemberDto {
   email: string;
   phoneNumber?: string;
   imageUrl?: string;
-  userId: number; // new
+  userId: string; // new
 }
 
 
-export interface UpdateMemberDto extends Partial<Omit<CreateMemberDto, 'userId'>> {} 
+export interface UpdateMemberDto extends Partial<Omit<CreateMemberDto, 'userId'>> {}
 
 export interface FilterMembersDto {
   searchTerm?: string;

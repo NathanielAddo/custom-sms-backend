@@ -12,8 +12,9 @@ export class Member {
 @JoinColumn({ name: "userId" })
 user!: User;
 
-@Column()
-userId!: number;
+@Column({ type: 'uuid' })
+  userId!: string;
+
 
   @Column()
   firstName!: string;
