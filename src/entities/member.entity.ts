@@ -8,12 +8,12 @@ export class Member {
   @PrimaryGeneratedColumn()
   id!: string;
 
-@ManyToOne(() => User, user => user.members, { onDelete: 'CASCADE' })
-@JoinColumn({ name: "userId" })
-user!: User;
+ @ManyToOne(() => User, user => user.members, { onDelete: 'CASCADE' })
+ @JoinColumn({ name: "userId" })
+ user!: User;
 
-@Column({ type: 'uuid' })
-  userId!: string;
+@Column()
+userId!: string; 
 
 
   @Column()

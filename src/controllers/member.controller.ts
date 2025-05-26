@@ -7,6 +7,7 @@ import { ApiResponse, ApiError } from "../utils/apiResponse";
 export class MemberController {
   private memberService = new MemberService();
 
+// In member.controller.ts
 public getAllMembers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     if (!req.session.user) {
@@ -14,6 +15,10 @@ public getAllMembers = async (req: Request, res: Response, next: NextFunction): 
     }
 
     const userId = req.session.user.id;
+    if (!userId) {
+      return next(new ApiError(400, "User ID is required"));
+    }
+
     const filters: FilterMembersDto = {
       searchTerm: req.query.searchTerm as string,
       subgroup: req.query.subgroup as string,
